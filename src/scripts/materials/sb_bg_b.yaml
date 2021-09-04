@@ -1,0 +1,94 @@
+type: ShaderMaterial
+params:
+  vertexShader: >
+      varying vec2 vUv;
+      uniform float opacity;
+      uniform float cell_scale;
+
+      void main() {
+          vUv = uv;
+          vec4 pos = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          gl_Position = vec4(position * 2., 1.);
+      }
+
+  fragmentShader: >
+    #extension GL_OES_standard_derivatives : enable
+
+    uniform float time;
+    uniform vec2 mouse;
+    uniform vec2 resolution;
+
+    #define PI 3.1415
+
+    vec3 bg = vec3(.21, .421, .328);
+    vec3 bg2 = vec3(.345, .332, .228);
+
+    float random(float p) {
+      return fract(sin(p * 11.2972) * 267.978);
+    }
+
+    vec2 random(in vec2 p)
+    {
+      return fract(1965.5786 * vec2(sin(p.x * 591.32 + p.y * 154.077), cos(p.x * 391.32 + p.y * 49.077)));
+    }
+
+    float random3(vec2 p) {
+      return fract(sin(dot(p.xy, vec2(12.2898,48.233)))* 42714.339281);
+    }
+
+    float tri(float x, float s)
+    {
+        return (abs(fract(x + s) - 0.5) - .25) * s;
+    }
+
+    vec3 pix(vec2 pos, float t, float s)
+    {
+        s += floor(t * 0.25);
+        float scl = (random(s + 30.0) * 4.0);
+        scl += sin(t * 2.0) * 0.25 + sin(t) * 0.5;
+        vec2 pol = vec2(atan(pos.x, pos.y), length(pos));
+        float id = floor(pol.y * 2.0 * scl);
+        pol.x += t * (random(id + s) * 2.0 - 1.0) * 0.4;
+        float rp = floor(random(id) * 5.0 + 4.0);
+        float v = (abs(tri(pol.x, PI / rp)) - id * 0.1) * pol.y;
+        v = max(v, abs(tri(pol.y, 1.0 / scl)) - (1.0 - id) * 0.11);
+        v *= clamp(sin(v), 0.75, 1.);
+        v = smoothstep(0.01, 0.0, v);
+        return vec3(v);
+    }
+
+    vec3 blur(vec2 pos)
+    {
+        float t = time * 3.0;
+        float s = 10.0;
+        return pix(pos, t, s) + pix(pos, t + sin(time) * .1, s + 50.);
+    }
+
+    void main( void ) {
+
+      vec2 position = (gl_FragCoord.xy * 2. - resolution.xy) / min(resolution.x, resolution.y);
+      // transition glitch
+        position += (vec2(random(time), random(time + 9.999)) - 0.5) * 0.03;
+
+      vec3 c = vec3(
+        blur(position).r,
+        blur(position + vec2(0.01, 0.002)).g,
+        blur(position + vec2(0.005, 0.001)).b
+      );
+      float percent = 1.0 - (gl_FragCoord.y / resolution.y);
+      vec3 bg = mix(bg, bg2, tan(time * 1.5));
+      c.r += bg.r * percent;
+      c.g += bg.g * percent;
+      c.b += bg.b * percent;
+      gl_FragColor = vec4(c, 1.0 );
+    }
+
+
+  transparent: true
+  blending: 1
+  uniforms: 
+    opacity: 
+      type: f
+      value: 1
+    map:
+      type: time;

@@ -1,0 +1,191 @@
+<style>
+    body,
+    html {
+        overflow: hidden;
+        margin: 0;
+        background: #333
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    body .app {
+        display: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .info {
+        max-width: 66%;
+        
+        background: #0d0d0d9c;
+        padding: 16px;
+    }
+
+    .info {
+        z-index: 999;
+        color: #eee;
+        font-family: 'Russo One', sans-serif;
+        font-size: 32px;
+    }
+
+    .info p {
+        margin: 0;
+    }
+
+    .info .titles {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+    }
+
+    .info .titles .title {
+        margin-right: 16px;
+        color: #ccc;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .info .titles .title:after {
+        content: "";
+        width: 4px;
+        height: 4px;
+        background: #ddd;
+        border-radius: 50%;
+        margin-left: 16px;
+
+    }
+
+    .info .titles .title:last-child:after {
+        display: none;
+
+    }
+
+    .info .titles .title:hover {
+        color: #f44336;
+        cursor: pointer;
+    }
+
+    .info .values {
+        height: 48px;
+        position: relative;
+    }
+
+    .info .values .value {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: #f44336;
+        text-decoration: underline;
+        font-size: 64px;
+        margin: 0;
+    }
+</style>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <title>@sanyabeast</title>
+</head>
+
+<body>
+    <div class="info">
+        <div class="content">
+            <div class="titles">
+                <div class="title">
+                    <p>telegram</p>
+                </div>
+                <div class="title">
+                    <p>linkedin</p>
+                </div>
+                <div class="title">
+                    <p>github</p>
+                </div>
+                <div class="title">
+                    <p>sketchfab</p>
+                </div>
+                <div class="title">
+                    <p>bitbucket</p>
+                </div>
+            </div>
+            
+            <div class="values">
+                <div class="value">
+                    <p>@sanyabeast</p>
+                </div>
+                <div class="value">
+                    <p>in/sanyabeast</p>
+                </div>
+                <div class="value">
+                    <p>github/sanyabeast</p>
+                </div>
+                <div class="value">
+                    <p>sketchfab/sanchibbo</p>
+                </div>
+                <div class="value">
+                    <p>bitbucket/sanyabeast</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="main.js"></script>
+    <script>
+        let btns = document.querySelectorAll(".info .title")
+        let vals = document.querySelectorAll(".info .value")
+
+        cbs = [
+            () => {
+                window.open("https://t.me/sanyabeast")
+            },
+            () => {
+                window.open("https://www.linkedin.com/in/sanyabeast/")
+            },
+            () => {
+                window.open("https://github.com/sanyabeast")
+            },
+            () => {
+                window.open("https://sketchfab.com/sanchibbo")
+            },
+            () => {
+                window.open("https://bitbucket.org/sanyabeast")
+            }
+        ]
+
+
+
+
+        btns.forEach((b, i) => {
+            b.addEventListener("mouseover", () => {
+                vals.forEach((v, vi) => {
+                    if (i === vi) {
+                        v.style.display = "flex"
+                    } else {
+                        v.style.display = "none"
+                    }
+                })
+            })
+
+            b.addEventListener("mouseout", () => {
+                vals.forEach((v, vi) => {
+                    v.style.display = "none"
+                })
+            })
+        })
+
+        btns.forEach((b, i) => {
+            b.addEventListener("mousedown", () => {
+                cbs[i] && cbs[i]()
+            })
+        })
+    </script>
+</body>
