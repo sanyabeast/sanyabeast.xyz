@@ -20,6 +20,7 @@ let materials = require.context("../materials/", true, /\.yaml$/);
 materials.keys().forEach((p) => {
     let name = p.replace("./", "").replace(".yaml", "");
     material_templates[name] = materials(p);
+    console.log(material_templates[name])
 });
 
 const geometry_templates = {};

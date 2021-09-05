@@ -15,6 +15,7 @@ class MainView extends THREE.Group {
     constructor(params) {
         super(params)
         let bg_mat_id = `@${material_names[Math.floor(Math.random() * material_names.length)]}`
+        bg_mat_id = "@sb_bg_e"
         console.log(bg_mat_id)
         this.setup_components([
             {
