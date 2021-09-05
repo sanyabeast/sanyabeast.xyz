@@ -8,7 +8,6 @@ import * as THREE from "three/build/three.module";
 let material_names = [
     "sb_bg_a",
     "sb_bg_b",
-    "sb_bg_c",
     "sb_bg_d"
 ]
 
@@ -17,7 +16,6 @@ class MainView extends THREE.Group {
         super(params)
         let bg_mat_id = `@${material_names[Math.floor(Math.random() * material_names.length)]}`
         console.log(bg_mat_id)
-        // bg_mat_id = "@sb_bg_d"
         this.setup_components([
             {
                 name: "SceneComponent",
